@@ -1,6 +1,7 @@
 package com.example.aquaticanimals.quiz;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +9,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.aquaticanimals.R;
+import com.example.aquaticanimals.questions.QuestionPage;
 
 import java.util.List;
 
@@ -48,12 +49,12 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
                 .circleCrop()
                 .into(holder.image);
 
-        /*holder.navigationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });*/
+        // set clickListener for the button & pass the quizId to next page
+        holder.takeQuizBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), QuestionPage.class);
+            intent.putExtra("quizId", quiz.getQuizId());
+            mContext.startActivity(intent);
+        });
     }
 
     @Override
@@ -62,7 +63,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public CardView cardView;
+        // public CardView cardView;
         public ImageView image;
         public TextView quizName, numOfQues, timeLimit, date;
         public Button takeQuizBtn;

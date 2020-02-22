@@ -50,10 +50,8 @@ public class QuizPage extends AppCompatActivity {
     }
 
     public void getQuizzes() {
-        // final String GET_URL = Apis.LIST_QUIZ;
-
         // Formulate the request and handle the response.
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Apis.LIST_QUIZ, response -> {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Apis.GET_LIST_QUIZ, response -> {
             try {
                 // Parsing json array response. loop through each json object and get its values
                 for (int i = 0; i < response.length(); i++) {
