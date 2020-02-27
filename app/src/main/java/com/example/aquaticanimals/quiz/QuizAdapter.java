@@ -49,10 +49,14 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
                 .circleCrop()
                 .into(holder.image);
 
-        // set clickListener for the button & pass the quizId to next page
+        // set clickListener for the button & pass the quiz's id,name,etc to the next page
         holder.takeQuizBtn.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), QuestionPage.class);
             intent.putExtra("quizId", quiz.getQuizId());
+            intent.putExtra("quizName", quiz.getQuizName());
+            intent.putExtra("numOfQues", quiz.getNumOfQues());
+            intent.putExtra("timeLimit", quiz.getTimeLimit());
+
             mContext.startActivity(intent);
         });
     }
