@@ -49,7 +49,7 @@ public class QuizPage extends AppCompatActivity {
         getQuizzes();
     }
 
-    public void getQuizzes() {
+    private void getQuizzes() {
         // Formulate the request and handle the response.
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Apis.GET_LIST_QUIZ, response -> {
             try {

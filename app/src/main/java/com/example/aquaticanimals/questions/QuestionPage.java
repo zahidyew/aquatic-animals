@@ -37,7 +37,7 @@ public class QuestionPage extends AppCompatActivity {
          // Toast.makeText(QuestionPage.this, "" + quizId, Toast.LENGTH_SHORT).show();
     }
 
-    public void getQuestions() {
+    private void getQuestions() {
         final String getUrl = Apis.GET_LIST_QUESTIONS + quizId;
 
         // Toast.makeText(QuestionPage.this, "" + quizId, Toast.LENGTH_SHORT).show();

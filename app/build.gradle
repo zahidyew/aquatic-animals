@@ -39,8 +39,11 @@ dependencies {
     implementation 'com.google.ar:core:1.14.0'
     implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.14.0'
     implementation 'com.google.ar.sceneform:core:1.14.0'
+
+    implementation 'com.google.android.material:material:1.0.0'
 }
 
+apply plugin: 'com.google.ar.sceneform.plugin'
 
 sceneform.asset('sampledata/Mesh_Penguin.obj',
         'default',
