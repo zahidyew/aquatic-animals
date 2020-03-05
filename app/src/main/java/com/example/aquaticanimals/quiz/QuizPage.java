@@ -39,6 +39,8 @@ public class QuizPage extends AppCompatActivity {
         // lock the screen to be in portrait orientation
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
+        getSupportActionBar().setTitle("Quiz");
+
         recyclerView = findViewById(R.id.recycler_view);
         quizList = new ArrayList<>();
         adapter = new QuizAdapter(this, quizList);

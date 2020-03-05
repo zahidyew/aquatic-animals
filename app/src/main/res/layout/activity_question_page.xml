@@ -11,8 +11,76 @@
         android:id="@+id/minuteElem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100px"
+        android:textColor="#000000"
         android:hint="Mins"/>
+
+    <TextView
+        android:id="@+id/quesElem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/minuteElem"
+        android:layout_marginBottom="30px"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        android:hint="Question Here"/>
+
+    <TextView
+        android:id="@+id/choiceElemA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/quesElem"
+        android:layout_marginBottom="15px"
+        android:textColor="#000000"
+        android:hint="A."
+        android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/choiceElemB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/choiceElemA"
+        android:layout_marginBottom="15px"
+        android:textColor="#000000"
+        android:hint="B."
+        android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/choiceElemC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/choiceElemB"
+        android:layout_marginBottom="15px"
+        android:textColor="#000000"
+        android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/choiceElemD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/choiceElemC"
+        android:layout_marginBottom="15px"
+        android:textColor="#000000"
+        android:clickable="true"/>
+
+
+    <Button
+        android:id="@+id/nextBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/choiceElemD"
+        android:layout_alignParentRight="true"
+        android:text="Next" />
+
+    <Button
+        android:id="@+id/backBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/choiceElemD"
+        android:layout_alignParentLeft="true"
+        android:text="Back"
+        android:visibility="invisible"/>
 
     <!--<TextView
         android:id="@+id/secondsElem"
