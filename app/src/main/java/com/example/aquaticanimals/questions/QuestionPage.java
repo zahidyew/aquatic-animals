@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.aquaticanimals.R;
+import com.example.aquaticanimals.utils.AlertDialogHelper;
 import com.example.aquaticanimals.utils.Apis;
 import com.example.aquaticanimals.utils.NetworkSingleton;
 import com.example.aquaticanimals.utils.SnackbarHelper;
@@ -55,6 +56,7 @@ public class QuestionPage extends AppCompatActivity {
     private int marks;
     private String date, time;
     private String username = "John Doe";
+    private AlertDialogHelper alertDialog;
 
     // TO-DO: after times up, prompt, check ans, saves to DB
 
@@ -75,6 +77,7 @@ public class QuestionPage extends AppCompatActivity {
 
         questionList = new ArrayList<>();
         answerList = new String[numOfQues];
+        alertDialog = new AlertDialogHelper();
 
         getQuestions();
         startTimer(timeLimit);
@@ -149,9 +152,10 @@ public class QuestionPage extends AppCompatActivity {
                 // show prompt here to inform times up
                 // stop the quiz.
 
-                //checkAnswer();
-                //saveRecordToDB();
-                //
+                checkAnswer();
+                saveRecordToDB();
+                final String msg = "Time's up. Your mark is " + marks;
+                alertDialog.buildMsgAndFinish(msg, QuestionPage.this, QuestionPage.this);
             }
         };
         countDownTimer.start();
@@ -357,15 +361,16 @@ public class QuestionPage extends AppCompatActivity {
                         // Do something with the response
                         if (response.equals("201")) { // saved to DB
                             final String MSG = "All done. Your mark is " + marks;
-                            SnackbarHelper.getInstance().showMessage(QuestionPage.this, MSG);
+                            alertDialog.buildMsgAndFinish(MSG, QuestionPage.this, QuestionPage.this);
+                            //SnackbarHelper.getInstance().showMessage(QuestionPage.this, MSG);
                         }
                         else if(response.equals("500")) { // error with DB/server
                             final String MSG = "Error.";
-                            SnackbarHelper.getInstance().showMessage(QuestionPage.this, MSG);
+                            alertDialog.buildMsgAndFinish(MSG, QuestionPage.this, QuestionPage.this);
                         }
                         else { // something unexpected
                             final String MSG = "Some error here.";
-                            SnackbarHelper.getInstance().showMessage(QuestionPage.this, MSG);
+                            alertDialog.buildMsgAndFinish(MSG, QuestionPage.this, QuestionPage.this);
                         }
                     }
                 },
