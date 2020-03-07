@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.aquaticanimals.markerAR.AugmentedImageActivity;
+import com.example.aquaticanimals.markerlessAR.ViewAnimals;
 import com.example.aquaticanimals.quiz.QuizPage;
 
 public class MainActivity extends AppCompatActivity {

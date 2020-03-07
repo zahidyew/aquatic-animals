@@ -49,3 +49,20 @@ sceneform.asset('sampledata/Mesh_Penguin.obj',
         'default',
         'sampledata/Mesh_Penguin.sfa',
         'src/main/assets/Mesh_Penguin')
+
+
+sceneform.asset('sampledata/seahorse.obj',
+        'default',
+        'sampledata/seahorse.sfa',
+        'src/main/assets/seahorse')
+
+
+sceneform.asset('sampledata/dolphin.obj',
+        'default',
+        'sampledata/dolphin.sfa',
+        'src/main/assets/dolphin')
+
+sceneform.asset('sampledata/turtle.obj',
+        'default',
+        'sampledata/turtle.sfa',
+        'src/main/assets/turtle')
