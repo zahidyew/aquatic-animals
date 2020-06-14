@@ -89,7 +89,7 @@
     file: 'sampledata/seahorse.obj',
     name: 'seahorse',
     recenter: 'root',
-    scale: 0.25,
+    scale: 0.0333,
   },
   samplers: [
     {

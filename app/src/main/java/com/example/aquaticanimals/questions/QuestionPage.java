@@ -1,9 +1,7 @@
 package com.example.aquaticanimals.questions;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -24,7 +21,6 @@ import com.example.aquaticanimals.R;
 import com.example.aquaticanimals.utils.AlertDialogHelper;
 import com.example.aquaticanimals.utils.Apis;
 import com.example.aquaticanimals.utils.NetworkSingleton;
-import com.example.aquaticanimals.utils.SnackbarHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +29,6 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,10 +50,8 @@ public class QuestionPage extends AppCompatActivity {
     private String[] answerList;
     private int marks;
     private String date, time;
-    private String username = "John Doe";
+    private String username;
     private AlertDialogHelper alertDialog;
-
-    // TO-DO: after times up, prompt, check ans, saves to DB
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +64,10 @@ public class QuestionPage extends AppCompatActivity {
         quizId = getIntent().getExtras().getInt("quizId");
         quizName = getIntent().getExtras().getString("quizName");
         numOfQues = getIntent().getExtras().getInt("numOfQues");
+        username = getIntent().getExtras().getString("username");
         int timeLimit = getIntent().getExtras().getInt("timeLimit");
 
-        getSupportActionBar().setTitle("Quiz - " + quizName);
+        getSupportActionBar().setTitle(quizName);
 
         questionList = new ArrayList<>();
         answerList = new String[numOfQues];
@@ -106,10 +100,8 @@ public class QuestionPage extends AppCompatActivity {
                     question = new Question(questionId, ques, choiceA, choiceB, choiceC, choiceD, answer, quizId);
                     questionList.add(question);
                 }
-                //Toast.makeText(QuestionPage.this, "" + questionList.size(), Toast.LENGTH_SHORT).show();
                 if(questionList.size() > 0)
                     setQuestion();
-                // adapter.notifyDataSetChanged();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -120,13 +112,10 @@ public class QuestionPage extends AppCompatActivity {
                 });
         // Add a request to the RequestQueue.
         NetworkSingleton.getInstance(this).addToRequestQueue(jsonArrayRequest);
-        // setQuestion();
     }
 
     private void startTimer(int time) {
         minsElem = findViewById(R.id.minuteElem);
-        //secsElem = findViewById(R.id.secondsElem);
-
         int timeInMillis = time * 60 * 1000;
         minute = time - 1;
 
@@ -141,19 +130,16 @@ public class QuestionPage extends AppCompatActivity {
                 }
 
                 minsElem.setText("" + minute + ":" + sixtySec);
-                //secsElem.setText(":" + sixtySec);
-                String trackTimer = "Timer";
+                //String trackTimer = "Timer";
                 //Log.i(trackTimer,"" + millisUntilFinished);
             }
 
             @Override
             public void onFinish() {
                 minsElem.setText("00:00");
-                // show prompt here to inform times up
-                // stop the quiz.
-
                 checkAnswer();
                 saveRecordToDB();
+
                 final String msg = "Time's up. Your mark is " + marks;
                 alertDialog.buildMsgAndFinish(msg, QuestionPage.this, QuestionPage.this);
             }
@@ -187,7 +173,6 @@ public class QuestionPage extends AppCompatActivity {
             if(num < numOfQues) {
                 num += 1;
                 displayQuestion();
-                //resetColor();
                 backBtn.setVisibility(View.VISIBLE);
 
                 // if it's the last question, then change the nextBtn's text from Next to Finish
@@ -210,13 +195,10 @@ public class QuestionPage extends AppCompatActivity {
         });
 
         backBtn.setOnClickListener(v -> {
-            //backBtnPressed = true;
             // if it's not the 1st question & last question
             if(num > 1 && num < numOfQues) {
                 num -= 1;
                 displayQuestion();
-                //resetColor();
-                //userHasSelectedAns();
 
                 // if it's the 1st question, then make the back button invisible
                 if(num == 1) {
@@ -227,8 +209,6 @@ public class QuestionPage extends AppCompatActivity {
             else if(num == numOfQues) {
                 num -= 1;
                 displayQuestion();
-                //resetColor();
-                //userHasSelectedAns();
                 nextBtn.setText("Next");
             }
         });
@@ -245,7 +225,7 @@ public class QuestionPage extends AppCompatActivity {
         backBtn = findViewById(R.id.backBtn);
 
         question = questionList.get(num - 1);
-        quesElem.setText(question.getQues());
+        quesElem.setText(num + ". " + question.getQues());
         choiceElemA.setText("A. " + question.getChoiceA());
         choiceElemB.setText("B. " + question.getChoiceB());
 
@@ -315,6 +295,23 @@ public class QuestionPage extends AppCompatActivity {
 
     private void userHasSelectedAns() {
         if(answerList[num-1] != null) {
+            if(answerList[num-1].equals("A")) {
+                choiceElemA.setTextColor(Color.GREEN);
+            }
+            else if(answerList[num-1].equals("B")) {
+                choiceElemB.setTextColor(Color.GREEN);
+            }
+            else if(answerList[num-1].equals("C")) {
+                choiceElemC.setTextColor(Color.GREEN);
+            }
+            else if(answerList[num-1].equals("D")) {
+                choiceElemD.setTextColor(Color.GREEN);
+            }
+        }
+    }
+
+    /*private void userHasSelectedAns() {
+        if(answerList[num-1] != null) {
             if(answerList[num-1] == "A") {
                 choiceElemA.setTextColor(Color.GREEN);
             }
@@ -328,7 +325,7 @@ public class QuestionPage extends AppCompatActivity {
                 choiceElemD.setTextColor(Color.GREEN);
             }
         }
-    }
+    }*/
 
     private void checkAnswer() {
         // fyi, in java cannot check string with ==, use .equals() instead
@@ -338,12 +335,11 @@ public class QuestionPage extends AppCompatActivity {
                 marks++;
             }
         }
-        // Toast.makeText(QuestionPage.this,"Marks= " + marks,Toast.LENGTH_SHORT).show();
     }
 
     private void getDateAndTime() {
         Instant instant = Instant.now();
-        ZoneId zoneId = ZoneId.of( "Asia/Singapore" ); // Or "Asia/Kolkata", "Europe/Paris", and so on.
+        ZoneId zoneId = ZoneId.of( "Asia/Singapore" );
         ZonedDateTime zdt = ZonedDateTime.ofInstant( instant , zoneId );
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy,hh:mm a");
         String[] output = zdt.format(formatter.withLocale(Locale.ENGLISH)).split(",");
@@ -362,7 +358,6 @@ public class QuestionPage extends AppCompatActivity {
                         if (response.equals("201")) { // saved to DB
                             final String MSG = "All done. Your mark is " + marks;
                             alertDialog.buildMsgAndFinish(MSG, QuestionPage.this, QuestionPage.this);
-                            //SnackbarHelper.getInstance().showMessage(QuestionPage.this, MSG);
                         }
                         else if(response.equals("500")) { // error with DB/server
                             final String MSG = "Error.";

@@ -89,7 +89,7 @@
     file: 'sampledata/dolphin.obj',
     name: 'dolphin',
     recenter: 'root',
-    scale: 0.0032810000000000001,
+    scale: 0.00028513,
   },
   version: '0.54:2',
 }

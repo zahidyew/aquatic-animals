@@ -9,6 +9,7 @@ import com.example.aquaticanimals.R;
 import com.example.aquaticanimals.utils.SnackbarHelper;
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.Frame;
+import com.google.ar.core.TrackingState;
 import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.ux.ArFragment;
 import java.util.Collection;
@@ -69,6 +70,7 @@ public class AugmentedImageActivity extends AppCompatActivity {
 
     Collection<AugmentedImage> updatedAugmentedImages =
         frame.getUpdatedTrackables(AugmentedImage.class);
+
     for (AugmentedImage augmentedImage : updatedAugmentedImages) {
       switch (augmentedImage.getTrackingState()) {
         case PAUSED:
@@ -96,5 +98,78 @@ public class AugmentedImageActivity extends AppCompatActivity {
           break;
       }
     }
+    /*for (AugmentedImage img : updatedAugmentedImages) {
+      // Developers can:
+      // 1. Check tracking state.
+      // 2. Render something based on the pose, or attach an anchor.
+      if (img.getTrackingState() == TrackingState.TRACKING) {
+        // Use getTrackingMethod() to determine whether the image is currently
+        // being tracked by the camera.
+        if (img.getTrackingMethod() == AugmentedImage.TrackingMethod.LAST_KNOWN_POSE) {
+          // The planar target is currently being tracked based on its last
+          // known pose.
+        } else    // (getTrackingMethod() == TrackingMethod.FULL_TRACKING)
+        {
+          // The planar target is being tracked using the current camera image.
+        }
+        // You can also check which image this is based on getName().
+        if (img.getName().equals("penguin")) {
+          String name = "penguin";
+          AugmentedImageNode node = new AugmentedImageNode(this, name);
+          node.setImage(img);
+          augmentedImageMap.put(img, node);
+          arFragment.getArSceneView().getScene().addChild(node);
+        }
+        else if (img.getName().equals("dolphin")) {
+          String name = "dolphin";
+          AugmentedImageNode node = new AugmentedImageNode(this, name);
+          node.setImage(img);
+          augmentedImageMap.put(img, node);
+          arFragment.getArSceneView().getScene().addChild(node);
+        }
+        else if (img.getName().equals("seahorse")) {
+          String name = "seahorse";
+          AugmentedImageNode node = new AugmentedImageNode(this, name);
+          node.setImage(img);
+          augmentedImageMap.put(img, node);
+          arFragment.getArSceneView().getScene().addChild(node);
+        }
+        else if (img.getName().equals("turtle")) {
+          String name = "turtle";
+          AugmentedImageNode node = new AugmentedImageNode(this, name);
+          node.setImage(img);
+          augmentedImageMap.put(img, node);
+          arFragment.getArSceneView().getScene().addChild(node);
+        }
+      }
+    }*/
+
+    /*for (AugmentedImage augmentedImage : updatedAugmentedImages) {
+      switch (augmentedImage.getTrackingState()) {
+        case PAUSED:
+          // When an image is in PAUSED state, but the camera is not PAUSED, it has been detected,
+          // but not yet tracked.
+          String text = "Detected Image " + augmentedImage.getIndex();
+          SnackbarHelper.getInstance().showMessage(this, text);
+          break;
+
+        case TRACKING:
+          // Have to switch to UI Thread to update View.
+          fitToScanView.setVisibility(View.GONE);
+
+          // Create a new anchor for newly found images.
+          if (!augmentedImageMap.containsKey(augmentedImage)) {
+            AugmentedImageNode node = new AugmentedImageNode(this);
+            node.setImage(augmentedImage);
+            augmentedImageMap.put(augmentedImage, node);
+            arFragment.getArSceneView().getScene().addChild(node);
+          }
+          break;
+
+        case STOPPED:
+          augmentedImageMap.remove(augmentedImage);
+          break;
+      }
+    }*/
   }
 }

@@ -7,7 +7,7 @@
     tools:context=".markerlessAR.ViewAnimals">
 
   <fragment
-      android:name="com.google.ar.sceneform.ux.ArFragment"
+      android:name="com.example.aquaticanimals.markerlessAR.WritingArFragment"
       android:id="@+id/ux_fragment"
       android:layout_width="match_parent"
       android:layout_height="0dp"
@@ -26,5 +26,13 @@
       app:layout_constraintVertical_chainStyle="spread"
       app:layout_constraintVertical_weight="1"
       android:background="#262626"/>
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:id="@+id/fab"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toBottomOf="@+id/ux_fragment"
+      app:layout_constraintRight_toRightOf="@+id/ux_fragment"
+      app:srcCompat="@drawable/ic_menu_camera"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

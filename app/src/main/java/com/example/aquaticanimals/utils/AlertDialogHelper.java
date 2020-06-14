@@ -12,7 +12,7 @@ public class AlertDialogHelper {
     public void buildMsgAndFinish(final String MESSAGE, Context context, Activity activity) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(MESSAGE);
-        builder.setCancelable(true);
+        builder.setCancelable(false);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                 activity.finish();

@@ -1,14 +1,20 @@
 package com.example.aquaticanimals.quiz;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -20,8 +26,11 @@ import java.util.List;
 public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> {
     private Context mContext;
     private List<Quiz> quizList;
+    private Activity activity;
+    private String username;
 
-    public QuizAdapter(Context mContext, List<Quiz> quizList) {
+    public QuizAdapter(Activity activity, Context mContext, List<Quiz> quizList) {
+        this.activity = activity;
         this.mContext = mContext;
         this.quizList = quizList;
     }
@@ -51,13 +60,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
 
         // set clickListener for the button & pass the quiz's id,name,etc to the next page
         holder.takeQuizBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), QuestionPage.class);
-            intent.putExtra("quizId", quiz.getQuizId());
-            intent.putExtra("quizName", quiz.getQuizName());
-            intent.putExtra("numOfQues", quiz.getNumOfQues());
-            intent.putExtra("timeLimit", quiz.getTimeLimit());
-
-            mContext.startActivity(intent);
+            promptForUsername(quiz.getQuizId(), quiz.getQuizName(), quiz.getNumOfQues(), quiz.getTimeLimit()).show();
         });
     }
 
@@ -82,5 +85,40 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
             takeQuizBtn = view.findViewById(R.id.takeQuizBtn);
             //date = view.findViewById(R.id.date);
         }
+    }
+
+    public Dialog promptForUsername(int quizId, String quizName, int numOfQues, int timeLimit) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View dialogBox = inflater.inflate(R.layout.dialog_box_name, null);
+        EditText uName = dialogBox.findViewById(R.id.username);
+
+        // Pass null as the parent view because its going in the dialog layout
+        builder.setView(dialogBox)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        username = uName.getText().toString();
+
+                        Intent intent = new Intent(mContext, QuestionPage.class);
+                        intent.putExtra("quizId", quizId);
+                        intent.putExtra("quizName", quizName);
+                        intent.putExtra("numOfQues", numOfQues);
+                        intent.putExtra("timeLimit", timeLimit);
+                        intent.putExtra("username", username);
+
+                        mContext.startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // nothing here. Clicking Cancel make Dialog Box disappear.
+                    }
+                });
+
+        return builder.create();
     }
 }

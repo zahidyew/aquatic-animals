@@ -31,10 +31,10 @@ public class AugmentedImageFragment extends ArFragment {
   // This is the name of the image in the sample database.  A copy of the image is in the assets
   // directory.  Opening this image on your computer is a good quick way to test the augmented image
   // matching.
-  private static final String DEFAULT_IMAGE_NAME = "default.jpg";
+  // private static final String DEFAULT_IMAGE_NAME = "default.jpg";
 
   // This is a pre-created database containing the sample image.
-  private static final String SAMPLE_IMAGE_DATABASE = "sample_database.imgdb";
+  private static final String SAMPLE_IMAGE_DATABASE = "markers.imgdb";
 
   // Augmented image configuration and rendering.
   // Load a single image (true) or a pre-generated image database (false).
@@ -114,8 +114,8 @@ public class AugmentedImageFragment extends ArFragment {
         return false;
       }
 
-      augmentedImageDatabase = new AugmentedImageDatabase(session);
-      augmentedImageDatabase.addImage(DEFAULT_IMAGE_NAME, augmentedImageBitmap);
+      //augmentedImageDatabase = new AugmentedImageDatabase(session);
+      //augmentedImageDatabase.addImage(DEFAULT_IMAGE_NAME, augmentedImageBitmap);
       // If the physical size of the image is known, you can instead use:
       //     augmentedImageDatabase.addImage("image_name", augmentedImageBitmap, widthInMeters);
       // This will improve the initial detection speed. ARCore will still actively estimate the
@@ -136,11 +136,11 @@ public class AugmentedImageFragment extends ArFragment {
   }
 
   private Bitmap loadAugmentedImageBitmap(AssetManager assetManager) {
-    try (InputStream is = assetManager.open(DEFAULT_IMAGE_NAME)) {
+    /*try (InputStream is = assetManager.open(DEFAULT_IMAGE_NAME)) {
       return BitmapFactory.decodeStream(is);
     } catch (IOException e) {
       Log.e(TAG, "IO exception loading augmented image bitmap.", e);
-    }
+    }*/
     return null;
   }
 }

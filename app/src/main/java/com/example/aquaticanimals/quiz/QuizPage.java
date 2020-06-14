@@ -43,7 +43,7 @@ public class QuizPage extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view);
         quizList = new ArrayList<>();
-        adapter = new QuizAdapter(this, quizList);
+        adapter = new QuizAdapter(this, this, quizList);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);

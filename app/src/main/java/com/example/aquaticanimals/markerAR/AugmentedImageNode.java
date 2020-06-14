@@ -27,7 +27,7 @@ public class AugmentedImageNode extends AnchorNode {
 
   // Add a variable called mazeRenderable for use with loading
   // GreenMaze.sfb.
-  private CompletableFuture<ModelRenderable> mazeRenderable;
+  private static CompletableFuture<ModelRenderable> mazeRenderable;
 
   // loads GreenMaze.sfb into mazeRenderable.
   public AugmentedImageNode(Context context) {
@@ -35,6 +35,27 @@ public class AugmentedImageNode extends AnchorNode {
             ModelRenderable.builder()
                     .setSource(context, Uri.parse("Mesh_Penguin.sfb"))
                     .build();
+  }
+
+
+  public AugmentedImageNode(Context context, String markerName) {
+    String modelName = "";
+    if(markerName.equals("penguin")) {
+      modelName = "Mesh_Penguin.sfb";
+    } else if(markerName.equals("seahorse")) {
+      modelName = "seahorse.sfb";
+    } else if(markerName.equals("dolphin")) {
+      modelName = "dolphin.sfb";
+    } else if(markerName.equals("turtle")) {
+      modelName = "turtle.sfb";
+    }
+
+    if (mazeRenderable == null) {
+      mazeRenderable =
+              ModelRenderable.builder()
+                      .setSource(context, Uri.parse(modelName))
+                      .build();
+    }
   }
 
   /**
@@ -61,7 +82,6 @@ public class AugmentedImageNode extends AnchorNode {
                         Log.e(TAG, "Exception loading", throwable);
                         return null;
                       });
-      return;
     }
     // Set the anchor based on the center of the image.
     setAnchor(image.createAnchor(image.getCenterPose()));

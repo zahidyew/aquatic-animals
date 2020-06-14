@@ -12,7 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100px"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="30dp"
         android:textColor="#000000"
         android:hint="Mins"/>
 
@@ -21,7 +22,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/minuteElem"
-        android:layout_marginBottom="30px"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:textSize="16sp"
         android:textColor="#000000"
         android:hint="Question Here"/>
@@ -31,7 +34,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/quesElem"
-        android:layout_marginBottom="15px"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:textColor="#000000"
         android:hint="A."
         android:clickable="true"/>
@@ -41,7 +46,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/choiceElemA"
-        android:layout_marginBottom="15px"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:textColor="#000000"
         android:hint="B."
         android:clickable="true"/>
@@ -51,7 +58,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/choiceElemB"
-        android:layout_marginBottom="15px"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:textColor="#000000"
         android:clickable="true"/>
 
@@ -60,7 +69,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/choiceElemC"
-        android:layout_marginBottom="15px"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:textColor="#000000"
         android:clickable="true"/>
 
@@ -71,6 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/choiceElemD"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
         android:text="Next" />
 
     <Button
@@ -79,15 +91,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/choiceElemD"
         android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
         android:text="Back"
         android:visibility="invisible"/>
-
-    <!--<TextView
-        android:id="@+id/secondsElem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/minuteElem"
-        android:layout_centerInParent="true"
-        android:hint="Secs"/>-->
 
 </RelativeLayout>

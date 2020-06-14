@@ -1,15 +1,22 @@
 package com.example.aquaticanimals.markerlessAR;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.PixelCopy;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,8 +24,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.example.aquaticanimals.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Frame;
 import com.google.ar.core.HitResult;
@@ -26,11 +36,18 @@ import com.google.ar.core.Plane;
 import com.google.ar.core.Trackable;
 import com.google.ar.core.TrackingState;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.ArSceneView;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ViewAnimals extends AppCompatActivity {
@@ -54,6 +71,7 @@ public class ViewAnimals extends AppCompatActivity {
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
         modelLoader = new ModelLoader(new WeakReference<>(this));
 
+        setUpFloatingButton();
         initializeGallery();
         buildModel(Uri.parse("Mesh_Penguin.sfb"));
 
@@ -68,11 +86,12 @@ public class ViewAnimals extends AppCompatActivity {
                     AnchorNode anchorNode = new AnchorNode(anchor);
                     anchorNode.setParent(arFragment.getArSceneView().getScene());
 
-                    // Create the transformable andy and add it to the anchor.
-                    TransformableNode andy = new TransformableNode(arFragment.getTransformationSystem());
-                    andy.setParent(anchorNode);
-                    andy.setRenderable(modelRenderable);
-                    andy.select();
+                    // Create the transformable node and add it to the anchor.
+                    TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
+                    node.setParent(anchorNode);
+                    node.setRenderable(modelRenderable);
+                    node.select();
+                    //startAnimation(node, modelRenderable);
                 });
     }
 
@@ -163,5 +182,107 @@ public class ViewAnimals extends AppCompatActivity {
                             toast.show();
                             return null;
                         });
+    }
+
+    /*private void startAnimation(TransformableNode node, ModelRenderable renderable){
+        if(renderable==null || renderable.getAnimationDataCount() == 0) {
+            return;
+        }
+        for(int i = 0;i < renderable.getAnimationDataCount();i++){
+            AnimationData animationData = renderable.getAnimationData(i);
+        }
+        ModelAnimator animator = new ModelAnimator(renderable.getAnimationData(0), renderable);
+        animator.start();
+        node.setOnTapListener(
+                (hitTestResult, motionEvent) -> {
+                    togglePauseAndResume(animator);
+                });
+    }
+
+    public void togglePauseAndResume(ModelAnimator animator) {
+        if (animator.isPaused()) {
+            animator.resume();
+        } else if (animator.isStarted()) {
+            animator.pause();
+        } else {
+            animator.start();
+        }
+    }*/
+
+    public void setUpFloatingButton() {
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            takePhoto();
+        });
+    }
+
+    private String generateFilename() {
+        String date =
+                new SimpleDateFormat("yyyyMMddHHmmss", java.util.Locale.getDefault()).format(new Date());
+        return Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES) + File.separator + "Sceneform/" + date + "_screenshot.jpg";
+    }
+
+    private void saveBitmapToDisk(Bitmap bitmap, String filename) throws IOException {
+
+        File out = new File(filename);
+        if (!out.getParentFile().exists()) {
+            out.getParentFile().mkdirs();
+        }
+        try (FileOutputStream outputStream = new FileOutputStream(filename);
+             ByteArrayOutputStream outputData = new ByteArrayOutputStream()) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputData);
+            outputData.writeTo(outputStream);
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException ex) {
+            throw new IOException("Failed to save bitmap to disk", ex);
+        }
+    }
+
+    private void takePhoto() {
+        final String filename = generateFilename();
+        ArSceneView view = arFragment.getArSceneView();
+
+        // Create a bitmap the size of the scene view.
+        final Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),
+                Bitmap.Config.ARGB_8888);
+
+        // Create a handler thread to offload the processing of the image.
+        final HandlerThread handlerThread = new HandlerThread("PixelCopier");
+        handlerThread.start();
+        // Make the request to copy.
+        PixelCopy.request(view, bitmap, (copyResult) -> {
+            if (copyResult == PixelCopy.SUCCESS) {
+                try {
+                    saveBitmapToDisk(bitmap, filename);
+                } catch (IOException e) {
+                    Toast toast = Toast.makeText(ViewAnimals.this, e.toString(),
+                            Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                        "Photo saved", Snackbar.LENGTH_LONG);
+                snackbar.setAction("Open in Photos", v -> {
+                    File photoFile = new File(filename);
+
+                    Uri photoURI = FileProvider.getUriForFile(ViewAnimals.this,
+                            ViewAnimals.this.getPackageName(),
+                            photoFile);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, photoURI);
+                    intent.setDataAndType(photoURI, "image/*");
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(intent);
+
+                });
+                snackbar.show();
+            } else {
+                Toast toast = Toast.makeText(ViewAnimals.this,
+                        "Failed to copyPixels: " + copyResult, Toast.LENGTH_LONG);
+                toast.show();
+            }
+            handlerThread.quitSafely();
+        }, new Handler(handlerThread.getLooper()));
     }
 }
