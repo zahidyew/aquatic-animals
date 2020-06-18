@@ -33,8 +33,7 @@ public class AugmentedImageNode extends AnchorNode {
 
   // loads GreenMaze.sfb into mazeRenderable.
   public AugmentedImageNode(Context context) {
-    mazeRenderable =
-            ModelRenderable.builder()
+    mazeRenderable = ModelRenderable.builder()
                     .setSource(context, Uri.parse("turtle.sfb"))
                     .build();
   }
@@ -56,12 +55,16 @@ public class AugmentedImageNode extends AnchorNode {
       modelName = "turtle.sfb";
     }
 
-    if (mazeRenderable == null) {
+    mazeRenderable = ModelRenderable.builder()
+                    .setSource(context, Uri.parse(modelName))
+                    .build();
+
+    /*if (mazeRenderable == null) {
       mazeRenderable =
               ModelRenderable.builder()
                       .setSource(context, Uri.parse(modelName))
                       .build();
-    }
+    }*/
   }
 
   /**

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.aquaticanimals.R;
 import com.example.aquaticanimals.utils.SnackbarHelper;
@@ -89,6 +90,7 @@ public class AugmentedImageActivity extends AppCompatActivity {
             //text = "Detected Image " + augmentedImage.getName();
             //SnackbarHelper.getInstance().showMessage(this, text);
             AugmentedImageNode node = new AugmentedImageNode(this, augmentedImage.getName());
+            Toast.makeText(getApplicationContext(), augmentedImage.getName(), Toast.LENGTH_SHORT).show();
             node.setImage(augmentedImage);
             augmentedImageMap.put(augmentedImage, node);
             arFragment.getArSceneView().getScene().addChild(node);
