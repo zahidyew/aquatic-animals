@@ -37,7 +37,7 @@
     file: 'sampledata/Mesh_Penguin.obj',
     name: 'Mesh_Penguin',
     recenter: 'root',
-    scale: 0.000625,
+    scale: 0.000833,
   },
   samplers: [
     {

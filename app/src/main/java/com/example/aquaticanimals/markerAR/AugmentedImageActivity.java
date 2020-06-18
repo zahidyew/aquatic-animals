@@ -86,7 +86,9 @@ public class AugmentedImageActivity extends AppCompatActivity {
 
           // Create a new anchor for newly found images.
           if (!augmentedImageMap.containsKey(augmentedImage)) {
-            AugmentedImageNode node = new AugmentedImageNode(this);
+            //text = "Detected Image " + augmentedImage.getName();
+            //SnackbarHelper.getInstance().showMessage(this, text);
+            AugmentedImageNode node = new AugmentedImageNode(this, augmentedImage.getName());
             node.setImage(augmentedImage);
             augmentedImageMap.put(augmentedImage, node);
             arFragment.getArSceneView().getScene().addChild(node);

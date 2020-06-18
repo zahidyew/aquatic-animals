@@ -3,6 +3,8 @@ package com.example.aquaticanimals.markerAR;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+
+import com.example.aquaticanimals.utils.SnackbarHelper;
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.Node;
@@ -33,12 +35,16 @@ public class AugmentedImageNode extends AnchorNode {
   public AugmentedImageNode(Context context) {
     mazeRenderable =
             ModelRenderable.builder()
-                    .setSource(context, Uri.parse("Mesh_Penguin.sfb"))
+                    .setSource(context, Uri.parse("turtle.sfb"))
                     .build();
   }
 
 
   public AugmentedImageNode(Context context, String markerName) {
+
+    //String text = "Detected Image " + markerName;
+    //SnackbarHelper.getInstance().showMessage(context, text);
+
     String modelName = "";
     if(markerName.equals("penguin")) {
       modelName = "Mesh_Penguin.sfb";

@@ -115,7 +115,7 @@
     file: 'sampledata/turtle.obj',
     name: 'turtle',
     recenter: 'root',
-    scale: 0.0001101,
+    scale: 0.00033,
   },
   version: '0.54:2',
 }
