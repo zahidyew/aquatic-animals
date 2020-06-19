@@ -17,11 +17,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
 
         // lock the screen to be in portrait orientation
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-
         setupButtons();
     }
 
@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         viewButton.setOnClickListener(v -> {
-            // Toast.makeText(MainActivity.this, "Clicked View", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this, ViewAnimals.class);
             startActivity(intent);
         });
