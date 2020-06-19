@@ -15,7 +15,7 @@ public class NetworkSingleton {
     private static NetworkSingleton networkInstance;
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;
-    private Context ctx; //ctx used to be static
+    private Context ctx;
 
     private NetworkSingleton(Context context) {
         ctx = context;
@@ -47,8 +47,6 @@ public class NetworkSingleton {
 
     public RequestQueue getRequestQueue() {
         if (requestQueue == null) {
-            // getApplicationContext() is key, it keeps you from leaking the
-            // Activity or BroadcastReceiver if someone passes one in.
             requestQueue = Volley.newRequestQueue(ctx.getApplicationContext());
         }
         return requestQueue;
