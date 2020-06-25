@@ -262,9 +262,10 @@ public class ViewAnimals extends AppCompatActivity {
                     toast.show();
                     return;
                 }
+                //Toast.makeText(ViewAnimals.this, "Photo saved", Toast.LENGTH_LONG).show();
                 Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
                         "Photo saved", Snackbar.LENGTH_LONG);
-                snackbar.setAction("Open in Photos", v -> {
+                /*snackbar.setAction("Open in Photos", v -> {
                     File photoFile = new File(filename);
 
                     Uri photoURI = FileProvider.getUriForFile(ViewAnimals.this,
@@ -275,7 +276,7 @@ public class ViewAnimals extends AppCompatActivity {
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(intent);
 
-                });
+                });*/
                 snackbar.show();
             } else {
                 Toast toast = Toast.makeText(ViewAnimals.this,

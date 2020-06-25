@@ -1,19 +1,35 @@
 package com.example.aquaticanimals.markerAR;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Environment;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.view.PixelCopy;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.aquaticanimals.R;
 import com.example.aquaticanimals.utils.SnackbarHelper;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.Frame;
 import com.google.ar.core.TrackingState;
+import com.google.ar.sceneform.ArSceneView;
 import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.ux.ArFragment;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +62,8 @@ public class AugmentedImageActivity extends AppCompatActivity {
     fitToScanView = findViewById(R.id.image_view_fit_to_scan);
 
     arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
+
+    setUpFloatingButton();
   }
 
   @Override
@@ -102,78 +120,83 @@ public class AugmentedImageActivity extends AppCompatActivity {
           break;
       }
     }
-    /*for (AugmentedImage img : updatedAugmentedImages) {
-      // Developers can:
-      // 1. Check tracking state.
-      // 2. Render something based on the pose, or attach an anchor.
-      if (img.getTrackingState() == TrackingState.TRACKING) {
-        // Use getTrackingMethod() to determine whether the image is currently
-        // being tracked by the camera.
-        if (img.getTrackingMethod() == AugmentedImage.TrackingMethod.LAST_KNOWN_POSE) {
-          // The planar target is currently being tracked based on its last
-          // known pose.
-        } else    // (getTrackingMethod() == TrackingMethod.FULL_TRACKING)
-        {
-          // The planar target is being tracked using the current camera image.
+  }
+
+  public void setUpFloatingButton() {
+    FloatingActionButton fab = findViewById(R.id.fab);
+    fab.setOnClickListener(view -> {
+      takePhoto();
+    });
+  }
+
+  private String generateFilename() {
+    String date =
+            new SimpleDateFormat("yyyyMMddHHmmss", java.util.Locale.getDefault()).format(new Date());
+    return Environment.getExternalStoragePublicDirectory(
+            Environment.DIRECTORY_PICTURES) + File.separator + "Sceneform/" + date + "_screenshot.jpg";
+  }
+
+  private void saveBitmapToDisk(Bitmap bitmap, String filename) throws IOException {
+
+    File out = new File(filename);
+    if (!out.getParentFile().exists()) {
+      out.getParentFile().mkdirs();
+    }
+    try (FileOutputStream outputStream = new FileOutputStream(filename);
+         ByteArrayOutputStream outputData = new ByteArrayOutputStream()) {
+      bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputData);
+      outputData.writeTo(outputStream);
+      outputStream.flush();
+      outputStream.close();
+    } catch (IOException ex) {
+      throw new IOException("Failed to save bitmap to disk", ex);
+    }
+  }
+
+  private void takePhoto() {
+    final String filename = generateFilename();
+    ArSceneView view = arFragment.getArSceneView();
+
+    // Create a bitmap the size of the scene view.
+    final Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),
+            Bitmap.Config.ARGB_8888);
+
+    // Create a handler thread to offload the processing of the image.
+    final HandlerThread handlerThread = new HandlerThread("PixelCopier");
+    handlerThread.start();
+    // Make the request to copy.
+    PixelCopy.request(view, bitmap, (copyResult) -> {
+      if (copyResult == PixelCopy.SUCCESS) {
+        try {
+          saveBitmapToDisk(bitmap, filename);
+        } catch (IOException e) {
+          Toast toast = Toast.makeText(AugmentedImageActivity.this, e.toString(),
+                  Toast.LENGTH_LONG);
+          toast.show();
+          return;
         }
-        // You can also check which image this is based on getName().
-        if (img.getName().equals("penguin")) {
-          String name = "penguin";
-          AugmentedImageNode node = new AugmentedImageNode(this, name);
-          node.setImage(img);
-          augmentedImageMap.put(img, node);
-          arFragment.getArSceneView().getScene().addChild(node);
-        }
-        else if (img.getName().equals("dolphin")) {
-          String name = "dolphin";
-          AugmentedImageNode node = new AugmentedImageNode(this, name);
-          node.setImage(img);
-          augmentedImageMap.put(img, node);
-          arFragment.getArSceneView().getScene().addChild(node);
-        }
-        else if (img.getName().equals("seahorse")) {
-          String name = "seahorse";
-          AugmentedImageNode node = new AugmentedImageNode(this, name);
-          node.setImage(img);
-          augmentedImageMap.put(img, node);
-          arFragment.getArSceneView().getScene().addChild(node);
-        }
-        else if (img.getName().equals("turtle")) {
-          String name = "turtle";
-          AugmentedImageNode node = new AugmentedImageNode(this, name);
-          node.setImage(img);
-          augmentedImageMap.put(img, node);
-          arFragment.getArSceneView().getScene().addChild(node);
-        }
+        //Toast.makeText(AugmentedImageActivity.this, "Photo saved", Toast.LENGTH_LONG).show();
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                "Photo saved", Snackbar.LENGTH_LONG);
+                /*snackbar.setAction("Open in Photos", v -> {
+                    File photoFile = new File(filename);
+
+                    Uri photoURI = FileProvider.getUriForFile(ViewAnimals.this,
+                            ViewAnimals.this.getPackageName(),
+                            photoFile);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, photoURI);
+                    intent.setDataAndType(photoURI, "image/*");
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(intent);
+
+                });*/
+        snackbar.show();
+      } else {
+        Toast toast = Toast.makeText(AugmentedImageActivity.this,
+                "Failed to copyPixels: " + copyResult, Toast.LENGTH_LONG);
+        toast.show();
       }
-    }*/
-
-    /*for (AugmentedImage augmentedImage : updatedAugmentedImages) {
-      switch (augmentedImage.getTrackingState()) {
-        case PAUSED:
-          // When an image is in PAUSED state, but the camera is not PAUSED, it has been detected,
-          // but not yet tracked.
-          String text = "Detected Image " + augmentedImage.getIndex();
-          SnackbarHelper.getInstance().showMessage(this, text);
-          break;
-
-        case TRACKING:
-          // Have to switch to UI Thread to update View.
-          fitToScanView.setVisibility(View.GONE);
-
-          // Create a new anchor for newly found images.
-          if (!augmentedImageMap.containsKey(augmentedImage)) {
-            AugmentedImageNode node = new AugmentedImageNode(this);
-            node.setImage(augmentedImage);
-            augmentedImageMap.put(augmentedImage, node);
-            arFragment.getArSceneView().getScene().addChild(node);
-          }
-          break;
-
-        case STOPPED:
-          augmentedImageMap.remove(augmentedImage);
-          break;
-      }
-    }*/
+      handlerThread.quitSafely();
+    }, new Handler(handlerThread.getLooper()));
   }
 }

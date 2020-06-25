@@ -16,6 +16,16 @@
       app:layout_constraintVertical_chainStyle="spread"
       app:layout_constraintVertical_weight="9"/>
 
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:id="@+id/fab"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginRight="176dp"
+      android:layout_marginBottom="25dp"
+      app:layout_constraintBottom_toBottomOf="@+id/ux_fragment"
+      app:layout_constraintRight_toRightOf="@+id/ux_fragment"
+      app:srcCompat="@drawable/ic_menu_camera" />
+
   <LinearLayout
       android:id="@+id/gallery_layout"
       android:layout_width="match_parent"
@@ -26,13 +36,5 @@
       app:layout_constraintVertical_chainStyle="spread"
       app:layout_constraintVertical_weight="1"
       android:background="#262626"/>
-
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-      android:id="@+id/fab"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      app:layout_constraintBottom_toBottomOf="@+id/ux_fragment"
-      app:layout_constraintRight_toRightOf="@+id/ux_fragment"
-      app:srcCompat="@drawable/ic_menu_camera"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
