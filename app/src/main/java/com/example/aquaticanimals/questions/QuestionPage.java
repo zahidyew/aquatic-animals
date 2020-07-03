@@ -180,10 +180,11 @@ public class QuestionPage extends AppCompatActivity {
                     nextBtn.setText("Finish");
                 }
             }
-            // if it's the last question, then check answers & submit the details to DB
+            // if it's the last question, then stop timer, check answers & submit the details to DB
             else {
                 nextBtn.setEnabled(false);
                 backBtn.setEnabled(false);
+                stopTimer();
                 checkAnswer();
                 saveRecordToDB();
 
