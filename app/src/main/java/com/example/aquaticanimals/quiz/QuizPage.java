@@ -37,7 +37,7 @@ public class QuizPage extends AppCompatActivity {
         setContentView(R.layout.activity_quiz_page);
 
         // lock the screen to be in portrait orientation
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         getSupportActionBar().setTitle("Quiz");
 

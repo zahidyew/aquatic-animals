@@ -59,7 +59,7 @@ public class QuestionPage extends AppCompatActivity {
         setContentView(R.layout.activity_question_page);
 
         // lock the screen to be in portrait orientation
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         quizId = getIntent().getExtras().getInt("quizId");
         quizName = getIntent().getExtras().getString("quizName");

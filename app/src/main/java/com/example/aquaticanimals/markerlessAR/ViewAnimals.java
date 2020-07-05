@@ -38,6 +38,7 @@ import com.google.ar.core.TrackingState;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.ArSceneView;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
@@ -56,6 +57,7 @@ public class ViewAnimals extends AppCompatActivity {
 
     private ArFragment arFragment;
     private ModelRenderable modelRenderable;
+    private ViewRenderable testViewRenderable;
     private ModelLoader modelLoader;
 
     @Override
@@ -75,6 +77,12 @@ public class ViewAnimals extends AppCompatActivity {
         initializeGallery();
         buildModel(Uri.parse("Mesh_Penguin.sfb"));
 
+        // build the renderable for Text Dialog
+        ViewRenderable.builder()
+                .setView(this, R.layout.test_view)
+                .build()
+                .thenAccept(renderable -> testViewRenderable = renderable);
+
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
                     if (modelRenderable == null) {
@@ -91,7 +99,13 @@ public class ViewAnimals extends AppCompatActivity {
                     node.setParent(anchorNode);
                     node.setRenderable(modelRenderable);
                     node.select();
+
+                    /*TransformableNode node2 = new TransformableNode(arFragment.getTransformationSystem());
+                    node2.setParent(node);
+                    node2.setRenderable(testViewRenderable);*/
                     //startAnimation(node, modelRenderable);
+
+                    modelClicked(node, modelRenderable);
                 });
     }
 
@@ -182,6 +196,18 @@ public class ViewAnimals extends AppCompatActivity {
                             toast.show();
                             return null;
                         });
+    }
+
+    private void modelClicked(TransformableNode node, ModelRenderable renderable) {
+        if(renderable==null) {
+            return;
+        }
+
+
+        node.setOnTapListener(
+                (hitTestResult, motionEvent) -> {
+                    Toast.makeText(ViewAnimals.this, "Clicked", Toast.LENGTH_SHORT).show();
+                });
     }
 
     /*private void startAnimation(TransformableNode node, ModelRenderable renderable){
