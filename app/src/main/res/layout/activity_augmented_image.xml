@@ -18,15 +18,16 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:scaleType="fitCenter"
-        android:src="@drawable/fit_to_scan"
+        android:src="@drawable/frame"
         android:contentDescription="Fit image to scan" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="280dp"
+        android:layout_gravity="right"
+        android:layout_marginTop="175dp"
+        android:layout_marginRight="25dp"
         app:srcCompat="@drawable/ic_menu_camera" />
 
 </FrameLayout>

@@ -1,5 +1,6 @@
 package com.example.aquaticanimals.markerAR;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,6 +58,9 @@ public class AugmentedImageActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_augmented_image);
+
+    // lock the screen to be in landscape orientation
+    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
     arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
     fitToScanView = findViewById(R.id.image_view_fit_to_scan);

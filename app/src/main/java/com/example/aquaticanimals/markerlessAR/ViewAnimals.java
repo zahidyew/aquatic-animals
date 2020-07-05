@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -70,6 +71,9 @@ public class ViewAnimals extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_view_animals);
+        // lock the screen to be in landscape orientation
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
         modelLoader = new ModelLoader(new WeakReference<>(this));
 
