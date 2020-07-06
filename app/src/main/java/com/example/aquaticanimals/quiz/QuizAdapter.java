@@ -91,10 +91,9 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         LayoutInflater inflater = activity.getLayoutInflater();
-        View dialogBox = inflater.inflate(R.layout.dialog_box_name, null);
+        View dialogBox = inflater.inflate(R.layout.dialog_box_name, null); // Pass null as the parent view because its going in the dialog
         EditText uName = dialogBox.findViewById(R.id.username);
 
-        // Pass null as the parent view because its going in the dialog layout
         builder.setView(dialogBox)
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {

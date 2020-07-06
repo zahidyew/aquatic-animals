@@ -16,15 +16,18 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.PixelCopy;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 
 import com.example.aquaticanimals.R;
@@ -61,6 +64,7 @@ public class ViewAnimals extends AppCompatActivity {
     private ViewRenderable testViewRenderable;
     private ModelLoader modelLoader;
     private String nodeName;
+    private ConstraintLayout mainLayout;
 
     @Override
     @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -72,6 +76,8 @@ public class ViewAnimals extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_view_animals);
+        mainLayout = (ConstraintLayout) findViewById(R.id.activity_view_animals);
+
         // lock the screen to be in landscape orientation
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
@@ -224,7 +230,16 @@ public class ViewAnimals extends AppCompatActivity {
 
         node.setOnTapListener(
                 (hitTestResult, motionEvent) -> {
-                    Toast.makeText(ViewAnimals.this, node.getName(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(ViewAnimals.this, node.getName(), Toast.LENGTH_SHORT).show();
+                    if (node.getName().equals("Penguin")) {
+                        Toast.makeText(ViewAnimals.this, node.getName() + "1", Toast.LENGTH_SHORT).show();
+                    } else if (node.getName().equals("Seahorse")) {
+                        Toast.makeText(ViewAnimals.this, node.getName() + "2", Toast.LENGTH_SHORT).show();
+                    } else if (node.getName().equals("Dolphin")) {
+                        Toast.makeText(ViewAnimals.this, node.getName(), Toast.LENGTH_SHORT).show();
+                    } else if (node.getName().equals("Turtle")) {
+                        Toast.makeText(ViewAnimals.this, node.getName(), Toast.LENGTH_SHORT).show();
+                    }
                 });
     }
 
@@ -255,8 +270,27 @@ public class ViewAnimals extends AppCompatActivity {
 
     public void setUpFloatingButton() {
         FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton infoBtn = findViewById(R.id.infoBtn);
+
         fab.setOnClickListener(view -> {
             takePhoto();
+        });
+
+        infoBtn.setOnClickListener(view -> {
+            LayoutInflater inflater = ViewAnimals.this.getLayoutInflater();
+            View animalInfo = inflater.inflate(R.layout.animal_info, mainLayout, false);
+            mainLayout.addView(animalInfo);
+
+            FloatingActionButton exitBtn = animalInfo.findViewById(R.id.exitBtn);
+
+            exitBtn.setOnClickListener(view2 -> {
+                mainLayout.removeView(animalInfo);
+                fab.show();
+                infoBtn.show();
+            });
+
+            fab.hide();
+            infoBtn.hide();
         });
     }
 
