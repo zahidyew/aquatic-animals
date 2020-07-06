@@ -60,6 +60,7 @@ public class ViewAnimals extends AppCompatActivity {
     private ModelRenderable modelRenderable;
     private ViewRenderable testViewRenderable;
     private ModelLoader modelLoader;
+    private String nodeName;
 
     @Override
     @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -80,6 +81,7 @@ public class ViewAnimals extends AppCompatActivity {
         setUpFloatingButton();
         initializeGallery();
         buildModel(Uri.parse("Mesh_Penguin.sfb"));
+        nodeName = "Penguin";
 
         // build the renderable for Text Dialog
         ViewRenderable.builder()
@@ -102,6 +104,7 @@ public class ViewAnimals extends AppCompatActivity {
                     TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
                     node.setParent(anchorNode);
                     node.setRenderable(modelRenderable);
+                    node.setName(nodeName);
                     node.select();
 
                     /*TransformableNode node2 = new TransformableNode(arFragment.getTransformationSystem());
@@ -119,25 +122,37 @@ public class ViewAnimals extends AppCompatActivity {
         ImageView penguin = new ImageView(this);
         penguin.setImageResource(R.drawable.penguin_tn);
         penguin.setContentDescription("Penguin");
-        penguin.setOnClickListener(view ->{modelLoader.loadModel(Uri.parse("Mesh_Penguin.sfb"));});
+        penguin.setOnClickListener(view ->{
+            modelLoader.loadModel(Uri.parse("Mesh_Penguin.sfb"));
+            nodeName = "Penguin";
+        });
         gallery.addView(penguin);
 
         ImageView seahorse = new ImageView(this);
         seahorse.setImageResource(R.drawable.seahorse_tn);
         seahorse.setContentDescription("Seahorse");
-        seahorse.setOnClickListener(view ->{modelLoader.loadModel(Uri.parse("seahorse.sfb"));});
+        seahorse.setOnClickListener(view ->{
+            modelLoader.loadModel(Uri.parse("seahorse.sfb"));
+            nodeName = "Seahorse";
+        });
         gallery.addView(seahorse);
 
         ImageView dolphin = new ImageView(this);
         dolphin.setImageResource(R.drawable.dolphin_tn);
         dolphin.setContentDescription("Dolphin");
-        dolphin.setOnClickListener(view ->{modelLoader.loadModel(Uri.parse("dolphin.sfb"));});
+        dolphin.setOnClickListener(view ->{
+            modelLoader.loadModel(Uri.parse("dolphin.sfb"));
+            nodeName = "Dolphin";
+        });
         gallery.addView(dolphin);
 
         ImageView turtle = new ImageView(this);
         turtle.setImageResource(R.drawable.turtle_tn);
         turtle.setContentDescription("Turtle");
-        turtle.setOnClickListener(view ->{modelLoader.loadModel(Uri.parse("turtle.sfb"));});
+        turtle.setOnClickListener(view ->{
+            modelLoader.loadModel(Uri.parse("turtle.sfb"));
+            nodeName = "Turtle";
+        });
         gallery.addView(turtle);
     }
 
@@ -207,10 +222,9 @@ public class ViewAnimals extends AppCompatActivity {
             return;
         }
 
-
         node.setOnTapListener(
                 (hitTestResult, motionEvent) -> {
-                    Toast.makeText(ViewAnimals.this, "Clicked", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ViewAnimals.this, node.getName(), Toast.LENGTH_SHORT).show();
                 });
     }
 
