@@ -46,6 +46,15 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final Quiz quiz = quizList.get(position);
+        String imageURL;
+
+        if(position % 3 == 0) {
+            imageURL = "https://source.unsplash.com/3Xd5j9-drDA";
+        } else if(position % 2 == 0) {
+            imageURL = "https://source.unsplash.com/Me7ySkVmWcw";
+        } else {
+            imageURL = "https://source.unsplash.com/pCMsbkittX8";
+        }
 
         holder.quizName.setText(quiz.getQuizName());
         holder.numOfQues.setText(quiz.getNumOfQues() + " questions");
@@ -53,7 +62,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
         //holder.date.setText(quiz.getDate());
 
         Glide.with(mContext)
-                .load("https://source.unsplash.com/9gz3wfHr65U")
+                .load(imageURL)
                 .centerCrop()
                 .circleCrop()
                 .into(holder.image);
