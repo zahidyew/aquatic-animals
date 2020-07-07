@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -31,6 +32,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 
 import com.example.aquaticanimals.R;
+import com.example.aquaticanimals.utils.Animal;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.ar.core.Anchor;
@@ -63,8 +65,9 @@ public class ViewAnimals extends AppCompatActivity {
     private ModelRenderable modelRenderable;
     private ViewRenderable testViewRenderable;
     private ModelLoader modelLoader;
-    private String nodeName;
+    private String nodeName, animalClicked;
     private ConstraintLayout mainLayout;
+    private FloatingActionButton infoBtn;
 
     @Override
     @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -112,6 +115,8 @@ public class ViewAnimals extends AppCompatActivity {
                     node.setRenderable(modelRenderable);
                     node.setName(nodeName);
                     node.select();
+                    animalClicked = node.getName();
+                    infoBtn.show();
 
                     /*TransformableNode node2 = new TransformableNode(arFragment.getTransformationSystem());
                     node2.setParent(node);
@@ -230,47 +235,25 @@ public class ViewAnimals extends AppCompatActivity {
 
         node.setOnTapListener(
                 (hitTestResult, motionEvent) -> {
-                    //Toast.makeText(ViewAnimals.this, node.getName(), Toast.LENGTH_SHORT).show();
-                    if (node.getName().equals("Penguin")) {
-                        Toast.makeText(ViewAnimals.this, node.getName() + "1", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ViewAnimals.this, node.getName(), Toast.LENGTH_SHORT).show();
+                    animalClicked = node.getName();
+
+                    /*if (node.getName().equals("Penguin")) {
+                        Toast.makeText(ViewAnimals.this, node.getName(), Toast.LENGTH_SHORT).show();
                     } else if (node.getName().equals("Seahorse")) {
-                        Toast.makeText(ViewAnimals.this, node.getName() + "2", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ViewAnimals.this, node.getName(), Toast.LENGTH_SHORT).show();
                     } else if (node.getName().equals("Dolphin")) {
                         Toast.makeText(ViewAnimals.this, node.getName(), Toast.LENGTH_SHORT).show();
                     } else if (node.getName().equals("Turtle")) {
                         Toast.makeText(ViewAnimals.this, node.getName(), Toast.LENGTH_SHORT).show();
-                    }
+                    }*/
                 });
     }
-
-    /*private void startAnimation(TransformableNode node, ModelRenderable renderable){
-        if(renderable==null || renderable.getAnimationDataCount() == 0) {
-            return;
-        }
-        for(int i = 0;i < renderable.getAnimationDataCount();i++){
-            AnimationData animationData = renderable.getAnimationData(i);
-        }
-        ModelAnimator animator = new ModelAnimator(renderable.getAnimationData(0), renderable);
-        animator.start();
-        node.setOnTapListener(
-                (hitTestResult, motionEvent) -> {
-                    togglePauseAndResume(animator);
-                });
-    }
-
-    public void togglePauseAndResume(ModelAnimator animator) {
-        if (animator.isPaused()) {
-            animator.resume();
-        } else if (animator.isStarted()) {
-            animator.pause();
-        } else {
-            animator.start();
-        }
-    }*/
 
     public void setUpFloatingButton() {
         FloatingActionButton fab = findViewById(R.id.fab);
-        FloatingActionButton infoBtn = findViewById(R.id.infoBtn);
+        infoBtn = findViewById(R.id.infoBtn);
+        infoBtn.hide();
 
         fab.setOnClickListener(view -> {
             takePhoto();
@@ -282,6 +265,52 @@ public class ViewAnimals extends AppCompatActivity {
             mainLayout.addView(animalInfo);
 
             FloatingActionButton exitBtn = animalInfo.findViewById(R.id.exitBtn);
+            TextView title = animalInfo.findViewById(R.id.title);
+            TextView field1 = animalInfo.findViewById(R.id.field1);
+            TextView field2 = animalInfo.findViewById(R.id.field2);
+            TextView field3 = animalInfo.findViewById(R.id.field3);
+            TextView field4 = animalInfo.findViewById(R.id.field4);
+            TextView field5 = animalInfo.findViewById(R.id.field5);
+            TextView field6 = animalInfo.findViewById(R.id.field6);
+            TextView field7 = animalInfo.findViewById(R.id.field7);
+
+            if (animalClicked.equals("Penguin")) {
+                title.setText("Penguin");
+                field1.setText(Animal.PENGUIN_ANIMAL_GROUP);
+                field2.setText(Animal.PENGUIN_SIZE);
+                field3.setText(Animal.PENGUIN_WEIGHT);
+                field4.setText(Animal.PENGUIN_LIFESPAN);
+                field5.setText(Animal.PENGUIN_DIET);
+                field6.setText(Animal.PENGUIN_HABITAT);
+                field7.setText(Animal.PENGUIN_STATUS);
+            } else if (animalClicked.equals("Seahorse")) {
+                title.setText("Seahorse");
+                field1.setText(Animal.SEAHORSE_ANIMAL_GROUP);
+                field2.setText(Animal.SEAHORSE_SIZE);
+                field3.setText(Animal.SEAHORSE_WEIGHT);
+                field4.setText(Animal.SEAHORSE_LIFESPAN);
+                field5.setText(Animal.SEAHORSE_DIET);
+                field6.setText(Animal.SEAHORSE_HABITAT);
+                field7.setText(Animal.SEAHORSE_STATUS);
+            } else if (animalClicked.equals("Dolphin")) {
+                title.setText("Dolphin");
+                field1.setText(Animal.DOLPHIN_ANIMAL_GROUP);
+                field2.setText(Animal.DOLPHIN_SIZE);
+                field3.setText(Animal.DOLPHIN_WEIGHT);
+                field4.setText(Animal.DOLPHIN_LIFESPAN);
+                field5.setText(Animal.DOLPHIN_DIET);
+                field6.setText(Animal.DOLPHIN_HABITAT);
+                field7.setText(Animal.DOLPHIN_STATUS);
+            } else if (animalClicked.equals("Turtle")) {
+                title.setText("Turtle");
+                field1.setText(Animal.TURTLE_ANIMAL_GROUP);
+                field2.setText(Animal.TURTLE_SIZE);
+                field3.setText(Animal.TURTLE_WEIGHT);
+                field4.setText(Animal.TURTLE_LIFESPAN);
+                field5.setText(Animal.TURTLE_DIET);
+                field6.setText(Animal.TURTLE_HABITAT);
+                field7.setText(Animal.TURTLE_STATUS);
+            }
 
             exitBtn.setOnClickListener(view2 -> {
                 mainLayout.removeView(animalInfo);
@@ -364,4 +393,29 @@ public class ViewAnimals extends AppCompatActivity {
             handlerThread.quitSafely();
         }, new Handler(handlerThread.getLooper()));
     }
+
+    /*private void startAnimation(TransformableNode node, ModelRenderable renderable){
+        if(renderable==null || renderable.getAnimationDataCount() == 0) {
+            return;
+        }
+        for(int i = 0;i < renderable.getAnimationDataCount();i++){
+            AnimationData animationData = renderable.getAnimationData(i);
+        }
+        ModelAnimator animator = new ModelAnimator(renderable.getAnimationData(0), renderable);
+        animator.start();
+        node.setOnTapListener(
+                (hitTestResult, motionEvent) -> {
+                    togglePauseAndResume(animator);
+                });
+    }
+
+    public void togglePauseAndResume(ModelAnimator animator) {
+        if (animator.isPaused()) {
+            animator.resume();
+        } else if (animator.isStarted()) {
+            animator.pause();
+        } else {
+            animator.start();
+        }
+    }*/
 }
