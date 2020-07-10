@@ -35,10 +35,7 @@ public class QuizPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_page);
-
-        // lock the screen to be in portrait orientation
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         getSupportActionBar().setTitle("Quiz");
 
         recyclerView = findViewById(R.id.recycler_view);
@@ -55,6 +52,7 @@ public class QuizPage extends AppCompatActivity {
         getQuizzes();
     }
 
+    // get quiz from the REST API
     private void getQuizzes() {
         // Formulate the request and handle the response.
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Apis.GET_LIST_QUIZ, response -> {

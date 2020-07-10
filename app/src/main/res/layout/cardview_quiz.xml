@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginBottom="5dp"
         card_view:cardCornerRadius="5dp"
         app:cardBackgroundColor="@android:color/white"
@@ -28,54 +28,68 @@
 
             <ImageView
                 android:id="@+id/image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+                android:layout_width="60px"
+                android:layout_height="60px"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp"/>
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
+                app:srcCompat="@drawable/quiz2"/>
 
             <TextView
                 android:id="@+id/quizName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/image"
-                android:paddingTop="20dp"
+                android:layout_marginTop="13dp"
                 android:paddingBottom="10dp"
                 android:textSize="18dp"
                 android:hint="Quiz"
                 android:textColor="#000000" />
 
+            <ImageView
+                android:id="@+id/image2"
+                android:layout_width="50px"
+                android:layout_height="50px"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_below="@+id/image"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="15dp"
+                app:srcCompat="@drawable/numbers"/>
+
             <TextView
                 android:id="@+id/numOfQues"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/image"
+                android:layout_toEndOf="@+id/image2"
                 android:layout_below="@+id/quizName"
                 android:hint="Total Questions:"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:layout_marginBottom="8dp"
+                android:textSize="12dp"/>
+
+            <ImageView
+                android:id="@+id/image3"
+                android:layout_width="50px"
+                android:layout_height="50px"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_below="@+id/image2"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="15dp"
+                app:srcCompat="@drawable/time"/>
 
             <TextView
                 android:id="@+id/timeLimit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/image"
+                android:layout_toEndOf="@+id/image3"
                 android:layout_below="@+id/numOfQues"
                 android:hint="Time Limit:"
-                android:textColor="#000000" />
-
-            <!--<TextView
-                android:id="@+id/date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/image"
-                android:layout_below="@+id/timeLimit"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:hint="Date: "
-                android:textColor="#000000" />-->
-                <!--android:layout_alignBottom="@+id/navigateButton"-->
+                android:textColor="#000000"
+                android:textSize="12dp"/>
 
             <Button
                 android:id="@+id/takeQuizBtn"
@@ -85,10 +99,12 @@
                 android:text="Take Quiz"
                 android:textColor="#000000"
                 android:layout_alignParentEnd="true"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
                 android:minHeight="0dp"
                 android:minWidth="0dp"
-                android:textSize="12dp"/>
+                android:textSize="12dp"
+                android:textAllCaps="false" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

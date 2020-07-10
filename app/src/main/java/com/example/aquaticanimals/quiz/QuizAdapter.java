@@ -46,31 +46,32 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final Quiz quiz = quizList.get(position);
-        String imageURL;
 
+        holder.quizName.setText(quiz.getQuizName());
+        holder.numOfQues.setText(quiz.getNumOfQues() + " questions");
+        holder.timeLimit.setText(quiz.getTimeLimit() + " minutes");
+
+        // set clickListener for the button & pass the quiz's id,name,etc to the next page
+        holder.takeQuizBtn.setOnClickListener(v -> {
+            promptForUsername(quiz.getQuizId(), quiz.getQuizName(), quiz.getNumOfQues(), quiz.getTimeLimit()).show();
+        });
+
+        /*String imageURL;
         if(position % 3 == 0) {
             imageURL = "https://source.unsplash.com/3Xd5j9-drDA";
         } else if(position % 2 == 0) {
             imageURL = "https://source.unsplash.com/Me7ySkVmWcw";
         } else {
             imageURL = "https://source.unsplash.com/pCMsbkittX8";
-        }
-
-        holder.quizName.setText(quiz.getQuizName());
-        holder.numOfQues.setText(quiz.getNumOfQues() + " questions");
-        holder.timeLimit.setText(quiz.getTimeLimit() + " minutes");
+        }*/
+        //holder.numOfQues.setText("Question\t\t: " + quiz.getNumOfQues() + " questions");
+        ///holder.timeLimit.setText("Time\t\t\t\t\t: " + quiz.getTimeLimit() + " minutes");
         //holder.date.setText(quiz.getDate());
-
-        Glide.with(mContext)
+        /*Glide.with(mContext)
                 .load(imageURL)
                 .centerCrop()
                 .circleCrop()
-                .into(holder.image);
-
-        // set clickListener for the button & pass the quiz's id,name,etc to the next page
-        holder.takeQuizBtn.setOnClickListener(v -> {
-            promptForUsername(quiz.getQuizId(), quiz.getQuizName(), quiz.getNumOfQues(), quiz.getTimeLimit()).show();
-        });
+                .into(holder.image);*/
     }
 
     @Override
@@ -79,7 +80,6 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        // public CardView cardView;
         public ImageView image;
         public TextView quizName, numOfQues, timeLimit, date;
         public Button takeQuizBtn;
@@ -92,7 +92,6 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
             numOfQues = view.findViewById(R.id.numOfQues);
             timeLimit = view.findViewById(R.id.timeLimit);
             takeQuizBtn = view.findViewById(R.id.takeQuizBtn);
-            //date = view.findViewById(R.id.date);
         }
     }
 
@@ -126,7 +125,6 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.MyViewHolder> 
                         // nothing here. Clicking Cancel make Dialog Box disappear.
                     }
                 });
-
         return builder.create();
     }
 }
