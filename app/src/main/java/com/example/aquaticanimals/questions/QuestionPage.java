@@ -124,12 +124,17 @@ public class QuestionPage extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 sixtySec -= 1;
 
-                if(sixtySec == 0 && minute != 0) {
-                    sixtySec = 60;
+                if(sixtySec == -1 && minute != 0) {
+                    sixtySec = 59;
                     minute -= 1;
                 }
+                if(sixtySec < 10) {
+                    minsElem.setText("" + minute + ":0" + sixtySec);
+                } else {
+                    minsElem.setText("" + minute + ":" + sixtySec);
+                }
 
-                minsElem.setText("" + minute + ":" + sixtySec);
+                minsElem.setTextColor(Color.BLUE);
                 //String trackTimer = "Timer";
                 //Log.i(trackTimer,"" + millisUntilFinished);
             }
@@ -332,8 +337,12 @@ public class QuestionPage extends AppCompatActivity {
         // fyi, in java cannot check string with ==, use .equals() instead
         for(int i = 0; i < numOfQues; i++) {
             question = questionList.get(i);
-            if(answerList[i].equals(question.getAnswer())) {
-                marks++;
+            if(answerList[i] == null) {
+                answerList[i] = "empty";
+            } else {
+                if(answerList[i].equals(question.getAnswer())) {
+                    marks++;
+                }
             }
         }
     }
