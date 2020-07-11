@@ -3,88 +3,67 @@ package com.example.aquaticanimals.markerAR;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.TextView;
 
-import com.example.aquaticanimals.utils.SnackbarHelper;
+import com.example.aquaticanimals.R;
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.rendering.ViewRenderable;
+
 import java.util.concurrent.CompletableFuture;
 
-/**
- * Node for rendering an augmented image. The image is framed by placing the virtual picture frame
- * at the corners of the augmented image trackable.
- */
+ /* Node for rendering an augmented image. The image is framed by placing the virtual picture frame
+ * at the corners of the augmented image trackable. */
 @SuppressWarnings({"AndroidApiChecker"})
 public class AugmentedImageNode extends AnchorNode {
 
   private static final String TAG = "AugmentedImageNode";
-
-  // The augmented image represented by this node.
   private AugmentedImage image;
-
-  // Add a member variable to hold the maze model.
-  private Node mazeNode;
-
-  // Add a variable called mazeRenderable for use with loading
-  // GreenMaze.sfb.
-  private static CompletableFuture<ModelRenderable> mazeRenderable;
-
-  // loads GreenMaze.sfb into mazeRenderable.
-  public AugmentedImageNode(Context context) {
-    mazeRenderable = ModelRenderable.builder()
-                    .setSource(context, Uri.parse("turtle.sfb"))
-                    .build();
-  }
-
+  private Node animalNode;
+  private String modelName, animalName;
+  private Context context;
+  private float yPos;
+  // Add a variable called animalRenderable for use to load the sfb files
+  private static CompletableFuture<ModelRenderable> animalRenderable;
 
   public AugmentedImageNode(Context context, String markerName) {
+    this.context = context;
 
-    //String text = "Detected Image " + markerName;
-    //SnackbarHelper.getInstance().showMessage(context, text);
-
-    String modelName = "";
     if(markerName.equals("penguin")) {
       modelName = "Mesh_Penguin.sfb";
+      animalName = "Penguin";
+      yPos = 0.15f;
     } else if(markerName.equals("seahorse")) {
       modelName = "seahorse.sfb";
+      animalName = "Seahorse";
+      yPos = 0.15f;
     } else if(markerName.equals("dolphin")) {
       modelName = "dolphin.sfb";
+      animalName = "Dolphin";
+      yPos = 0.2f;
     } else if(markerName.equals("turtle")) {
       modelName = "turtle.sfb";
+      animalName = "Turtle";
+      yPos = 0.10f;
     }
 
-    mazeRenderable = ModelRenderable.builder()
-                    .setSource(context, Uri.parse(modelName))
-                    .build();
-
-    /*if (mazeRenderable == null) {
-      mazeRenderable =
-              ModelRenderable.builder()
+    animalRenderable = ModelRenderable.builder()
                       .setSource(context, Uri.parse(modelName))
                       .build();
-    }*/
   }
 
-  /**
-   * Called when the AugmentedImage is detected and should be rendered. A Sceneform node tree is
-   * created based on an Anchor created from the image. The corners are then positioned based on the
-   * extents of the image. There is no need to worry about world coordinates since everything is
-   * relative to the center of the image, which is the parent node of the corners.
-   */
-  @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
-  // Replace the definition of the setImage function with the following
-  // code, which checks if mazeRenderable has completed loading.
 
+  @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
+  // Initialize animalNode and set its parents and the Renderable.
+  // If any of the models are not loaded, process this function until they all are loaded.
   public void setImage(AugmentedImage image) {
     this.image = image;
 
-    // Initialize mazeNode and set its parents and the Renderable.
-    // If any of the models are not loaded, process this function
-    // until they all are loaded.
-    if (!mazeRenderable.isDone()) {
-      CompletableFuture.allOf(mazeRenderable)
+    if (!animalRenderable.isDone()) {
+      CompletableFuture.allOf(animalRenderable)
               .thenAccept((Void aVoid) -> setImage(image))
               .exceptionally(
                       throwable -> {
@@ -95,9 +74,22 @@ public class AugmentedImageNode extends AnchorNode {
     // Set the anchor based on the center of the image.
     setAnchor(image.createAnchor(image.getCenterPose()));
 
-    mazeNode = new Node();
-    mazeNode.setParent(this);
-    mazeNode.setRenderable(mazeRenderable.getNow(null));
+    animalNode = new Node();
+    animalNode.setParent(this);
+    animalNode.setName(animalName);
+    animalNode.setRenderable(animalRenderable.getNow(null));
+
+    Node textNode = new Node();
+    textNode.setParent(animalNode);
+    textNode.setLocalPosition(new Vector3(0.0f, yPos, 0.0f));
+    ViewRenderable.builder()
+            .setView(context, R.layout.test_view)
+            .build()
+            .thenAccept(renderable -> {
+                textNode.setRenderable(renderable);
+                TextView textView = (TextView) renderable.getView();
+                textView.setText(animalNode.getName());
+            });
   }
 
   public AugmentedImage getImage() {

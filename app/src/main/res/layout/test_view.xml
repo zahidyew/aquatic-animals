@@ -3,10 +3,18 @@
     android:id="@+id/planetInfoCard"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="6dp"
     android:text="Test"
-    android:textColor="#000000"
-    android:textAlignment="center" />
+    android:textColor="#ffffff"
+    android:textSize="12dp" />
+
+<!--<androidx.cardview.widget.CardView
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/card_view"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+app:cardCornerRadius="10dp"
+app:cardBackgroundColor="@android:color/white"
+app:cardElevation="4dp"
+app:cardPreventCornerOverlap="true"
+android:foreground="?android:attr/selectableItemBackground">-->

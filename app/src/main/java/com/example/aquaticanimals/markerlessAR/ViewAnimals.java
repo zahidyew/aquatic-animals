@@ -93,10 +93,10 @@ public class ViewAnimals extends AppCompatActivity {
         nodeName = "Penguin";
 
         // build the renderable for Text Dialog
-        ViewRenderable.builder()
+        /*ViewRenderable.builder()
                 .setView(this, R.layout.test_view)
                 .build()
-                .thenAccept(renderable -> testViewRenderable = renderable);
+                .thenAccept(renderable -> testViewRenderable = renderable);*/
 
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
