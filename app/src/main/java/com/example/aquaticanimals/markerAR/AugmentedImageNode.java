@@ -87,7 +87,8 @@ public class AugmentedImageNode extends AnchorNode {
             .build()
             .thenAccept(renderable -> {
                 textNode.setRenderable(renderable);
-                TextView textView = (TextView) renderable.getView();
+                believe.cht.fadeintextview.TextView textView = (believe.cht.fadeintextview.TextView) renderable.getView();
+                textView.setLetterDuration(1000);
                 textView.setText(animalNode.getName());
             });
   }

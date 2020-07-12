@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<believe.cht.fadeintextview.TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/planetInfoCard"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:textSize="12sp"
     android:text="Test"
-    android:textColor="#ffffff"
-    android:textSize="12dp" />
+    android:textColor="#ffffff" />
+
+
+    <!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/planetInfoCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test"
+        android:textColor="#ffffff"
+        android:textSize="12dp" />-->
 
 <!--<androidx.cardview.widget.CardView
 xmlns:android="http://schemas.android.com/apk/res/android"
