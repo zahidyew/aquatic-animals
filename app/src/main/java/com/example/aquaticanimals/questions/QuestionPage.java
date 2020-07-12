@@ -1,6 +1,7 @@
 package com.example.aquaticanimals.questions;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -43,6 +44,7 @@ public class QuestionPage extends AppCompatActivity {
     private Question question;
 
     private TextView minsElem, quesElem, choiceElemA, choiceElemB, choiceElemC, choiceElemD;
+    private CardView cardViewC, cardViewD;
     private Button nextBtn, backBtn;
     private int sixtySec = 60, minute;
     private CountDownTimer countDownTimer;
@@ -230,6 +232,9 @@ public class QuestionPage extends AppCompatActivity {
         nextBtn = findViewById(R.id.nextBtn);
         backBtn = findViewById(R.id.backBtn);
 
+        cardViewC = findViewById(R.id.card_view4);
+        cardViewD = findViewById(R.id.card_view5);
+
         question = questionList.get(num - 1);
         quesElem.setText(num + ". " + question.getQues());
         choiceElemA.setText("A. " + question.getChoiceA());
@@ -238,14 +243,18 @@ public class QuestionPage extends AppCompatActivity {
         // check if C & D is empty. Because sometimes its a True & False Question.
         if(question.getChoiceC().equals("")) {
             choiceElemC.setText("");
+            cardViewC.setVisibility(View.INVISIBLE);
         }
         else{
+            cardViewC.setVisibility(View.VISIBLE);
             choiceElemC.setText("C. " + question.getChoiceC());
         }
         if(question.getChoiceD().equals("")) {
             choiceElemD.setText("");
+            cardViewD.setVisibility(View.INVISIBLE);
         }
         else{
+            cardViewD.setVisibility(View.VISIBLE);
             choiceElemD.setText("D. " + question.getChoiceD());
         }
         resetColor();
