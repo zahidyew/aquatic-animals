@@ -127,6 +127,13 @@ public class ViewAnimals extends AppCompatActivity {
                 });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //arFragment.getArSceneView().destroy();
+        arFragment.getArSceneView().getSession().close();
+    }
+
     private void initializeGallery() {
         LinearLayout gallery = findViewById(R.id.gallery_layout);
 

@@ -49,6 +49,7 @@ public class AugmentedImageActivity extends AppCompatActivity {
 
   private ArFragment arFragment;
   private ImageView fitToScanView;
+  private AugmentedImageNode node;
 
   // Augmented image and its associated center pose anchor, keyed by the augmented image in
   // the database.
@@ -76,6 +77,14 @@ public class AugmentedImageActivity extends AppCompatActivity {
     if (augmentedImageMap.isEmpty()) {
       fitToScanView.setVisibility(View.VISIBLE);
     }
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    //arFragment.getArSceneView().destroy();
+    arFragment.getArSceneView().getSession().close();
+    //arFragment.getArSceneView().destroyAllResources();
   }
 
   /**
@@ -111,7 +120,7 @@ public class AugmentedImageActivity extends AppCompatActivity {
           if (!augmentedImageMap.containsKey(augmentedImage)) {
             //text = "Detected Image " + augmentedImage.getName();
             //SnackbarHelper.getInstance().showMessage(this, text);
-            AugmentedImageNode node = new AugmentedImageNode(this, augmentedImage.getName());
+            node = new AugmentedImageNode(this, augmentedImage.getName());
             Toast.makeText(getApplicationContext(), augmentedImage.getName(), Toast.LENGTH_SHORT).show();
             node.setImage(augmentedImage);
             augmentedImageMap.put(augmentedImage, node);
